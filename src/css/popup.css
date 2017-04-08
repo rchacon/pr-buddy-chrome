@@ -1,0 +1,32 @@
+body {
+  height: 400px;
+  width: 300px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  line-height: 20px;
+  list-style-position: inside;
+  border-left: 3px solid green;
+  padding-left: 6px;
+  margin: 0 0 8px 0;
+}
+
+li .warning {
+  border-left: 3px solid orange;
+}
+
+li .danger {
+  border-left: 3px solid red;
+}
+
+a {
+  text-decoration: none;
+}
+
+span {
+  color: grey;
+}

@@ -1,0 +1,45 @@
+h1 {
+  color: #336699;
+  font-family: "proxima-nova", sans-serif;
+  letter-spacing: 0.1em;
+}
+
+button {
+  background-color: #336699;
+  border-color: #2d5986;
+  border-radius: 1.2em;
+  color: #ffffff;
+  padding: 6px 12px;
+  width: 100%
+}
+
+input {
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  border-radius: 1.2em;
+  line-height: 1.75;
+  margin-bottom: 10px;
+  padding-left: 6px;
+  -webkit-box-sizing: border-box;
+  width: 100%;
+}
+
+textarea {
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  border-radius: 1.2em;
+  margin-bottom: 10px;
+  padding-left: 6px;
+  -webkit-box-sizing: border-box;
+  width: 100%;
+}
+
+.container {
+  width: 550px;
+  margin: 100px auto 0;
+  text-align: center;
+}
+
+#status {
+  font-weight: bold;
+}
