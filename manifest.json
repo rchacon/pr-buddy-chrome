@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "GitHub PR Buddy",
+  "name": "PR Buddy",
   "description": "Chrome extension for displaying GitHub Pull Requests.",
   "version": "0.0.0",
   "browser_action": {
