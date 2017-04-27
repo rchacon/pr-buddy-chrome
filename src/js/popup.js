@@ -1,3 +1,42 @@
+function determineAge(pr) {
+  /* Determines how long a pull request has been open.
+   * PRs open longer than 2 days receive a warning.
+   * PRs open longer than 4 days are considered in danger.
+  */
+  var createdAt = new Date(pr["created_at"]);
+  var delta = new Date() - createdAt; // Get delta in milliseconds
+  var minutes = (delta / 1000) / 60;
+  var hours = minutes / 60;
+  var days = parseInt(hours / 24);
+
+  var age = "";
+  var status = "good";
+
+  if (days > 0) {
+    if (days > 1) {
+      age = days + ' days';
+      if (days > 2) {
+        status = 'warning';
+      }
+      if (days > 4) {
+        status = 'danger';
+      }
+    } else {
+      age = days + ' day';
+    }
+  } else if (hours >= 1) {
+    age = parseInt(hours) + ' hours';
+  } else {
+    age = parseInt(minutes) + ' minutes'; 
+  }
+
+  return {
+    age: age,
+    status: status
+  };
+}
+
+
 function getPrs(token, repo) {
   var xhr = new XMLHttpRequest();
 
@@ -5,7 +44,7 @@ function getPrs(token, repo) {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       var jsonData = JSON.parse(xhr.responseText);
 
-      var content, link, listItem, pr = null;
+      var content, link, listItem, pr = null, age = null, createdAt;
       for (var i = 0; i < jsonData.length; i++) {
         pr = jsonData[i];
 
@@ -14,10 +53,14 @@ function getPrs(token, repo) {
         content = "<span>" + pr["user"]["login"] + "</span><br>";
         content += pr["title"] + "<br>";
         content += "<span>" + repo.split("/")[1] + "</span><br>";
-        content += "<span>" + pr["created_at"] + "</span>";
+        createdAt = new Date(pr["created_at"]);
+        content += "<span>" + createdAt.toDateString() + " at " + createdAt.toLocaleTimeString('en-US') + "</span>";
         link.innerHTML = content;
 
+        age = determineAge(pr);
+
         listItem = document.createElement("li");
+        listItem.className = age["status"];
         listItem.appendChild(link);
 
         prList.appendChild(listItem);
@@ -28,15 +71,13 @@ function getPrs(token, repo) {
   var prList = document.getElementById("pr-list");
   
   xhr.open("GET", "https://api.github.com/repos/" + repo + "/pulls");    
-
   xhr.setRequestHeader("Accept", "application/vnd.github.v3+json");
   xhr.setRequestHeader("Authorization", "token " + token);
-  
   xhr.send();
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+function main () {
   chrome.storage.local.get({
     githubToken: "",
     githubRepos: ""
@@ -51,4 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
-});
+}
+
+
+document.addEventListener('DOMContentLoaded', main);
