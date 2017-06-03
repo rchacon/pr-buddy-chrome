@@ -64,10 +64,12 @@ function getPrs(token, repo) {
         listItem.appendChild(link);
 
         prList.appendChild(listItem);
+        count.innerHTML = prList.children.length;
       }        
     }
   };
 
+  var count = document.getElementById("count");
   var prList = document.getElementById("pr-list");
   
   xhr.open("GET", "https://api.github.com/repos/" + repo + "/pulls");    
