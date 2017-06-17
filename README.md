@@ -7,3 +7,7 @@ Chrome extension for displaying GitHub Pull Requests.
 ```
 $ zip -r pr-buddy.zip pr-buddy-chrome -x *.git*
 ```
+
+## Running Tests
+
+Open in browser: `test/test.html`

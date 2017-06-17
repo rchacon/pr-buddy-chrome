@@ -26,7 +26,7 @@ var pullRequest = {
           status = 'danger';
         }
       } else {
-        age = days + ' day';
+        age = '1 day';
       }
     } else if (hours >= 1) {
       age = parseInt(hours) + ' hours';
