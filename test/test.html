@@ -22,6 +22,46 @@
     age(new Date("2016-10-10T07:00:00Z"), {age: "4 days", status: "warning"});
     age(new Date("2016-10-11T07:00:00Z"), {age: "5 days", status: "danger"});
   });
+
+  QUnit.test("pullRequest.buildSlackMessage with 1 PR", function (assert) {
+    var prs = [{
+      "head": {
+        "repo": {
+          "full_name": "owner/repo"
+        }
+      },
+      "user": {
+        avatar_url: "my-avatar-url",
+        html_url: "my-html-url",
+        login: "hankhill"
+      },
+      html_url: "pr-html-url",
+      created_at: "2011-04-10T20:09:31Z",
+      title: "My Awesome PR"
+    }];
+
+    var origDetermineAge = pullRequest.determineAge;
+    pullRequest.determineAge = function (x, y) { return {age: '28 days', status: 'great!'}; }
+
+    var result = pullRequest.buildSlackMessage(prs);
+    var expected = {
+      message: "There is *1* pull request in *review*:\nSent from <" + CHROME_EXT_URL + "|Chrome Extension>",
+      attachments: [{
+        author_icon: "my-avatar-url",
+        author_link: "my-html-url",
+        author_name: "hankhill",
+        color: "great!",
+        fallback: "My Awesome PR (opened 28 days ago)",
+        title: "My Awesome PR",
+        title_link: "pr-html-url",
+        text: "owner/repo",
+        ts: new Date("2011-04-10T20:09:31Z").getTime()/1000|0
+      }]
+    }
+    assert.deepEqual(result, expected);
+
+    pullRequest.determineAge = origDetermineAge;
+  });
   </script>
 </head>
 <body>
