@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "PR Buddy",
   "description": "Chrome extension for displaying GitHub Pull Requests.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "icons": {
     "128": "icons/icon128.png",
     "48": "icons/icon48.png"
@@ -13,6 +13,7 @@
   "options_page": "src/options.html",
   "permissions": [
     "storage",
-    "https://api.github.com/repos/*/*/pulls"
+    "https://api.github.com/repos/*/*/pulls",
+    "https://hooks.slack.com/services/*"
   ]
 }
