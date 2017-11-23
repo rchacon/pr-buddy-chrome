@@ -19,7 +19,7 @@ function main () {
 }
 
 /**
- * Get slack webhook ID from storage and send slack message to default channel.
+ * Get slack webhook ID and channel from storage and send message with list of PRs.
  */
 function slackIt () {
   chrome.storage.local.get({
