@@ -1,3 +1,5 @@
+var CHROME_EXT_URL = "https://chrome.google.com/webstore/detail/pr-buddy/bimchafkfbfdnapifcpokgkioaicfpnd?hl=en-US&gl=US";
+
 var pullRequest = {
   items: [],
 
@@ -97,7 +99,10 @@ var pullRequest = {
     }
   },
 
-
+  /**
+   * Build Slack text and attachments
+   * @param {array} Array of PR objects
+   */
   buildSlackMessage: function (prs) {
     var message;
     if (prs.length > 1) {
@@ -106,7 +111,7 @@ var pullRequest = {
       message = "There is *1* pull request in *review*:";
     }
 
-    message += "\nSent from <https://chrome.google.com/webstore/detail/pr-buddy/bimchafkfbfdnapifcpokgkioaicfpnd?hl=en-US&gl=US|Chrome Extension>";
+    message += "\nSent from <" + CHROME_EXT_URL + "|Chrome Extension>";
 
     prs.sort(function(a, b) {
       return (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0);
@@ -135,6 +140,8 @@ var pullRequest = {
 
   /**
    * Slack list of PRs
+   * @param {string} Slack Webhook ID
+   * @param {string} Slack Channel
    */
   slackIt: function (webhookId, channel) {
     var xhr = new XMLHttpRequest();
