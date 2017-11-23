@@ -99,12 +99,14 @@ var pullRequest = {
 
 
   buildSlackMessage: function (prs) {
-    var message = "Get the <https://chrome.google.com/webstore/detail/pr-buddy/bimchafkfbfdnapifcpokgkioaicfpnd?hl=en-US&gl=US|Chrome Extension>\n";
+    var message;
     if (prs.length > 1) {
-      message += "There are *" + prs.length + "* pull requests in *review*:";
+      message = "There are *" + prs.length + "* pull requests in *review*:";
     } else if (prs.length === 1) {
-      message += "There is *1* pull request in *review*:";
+      message = "There is *1* pull request in *review*:";
     }
+
+    message += "\nSent from <https://chrome.google.com/webstore/detail/pr-buddy/bimchafkfbfdnapifcpokgkioaicfpnd?hl=en-US&gl=US|Chrome Extension>";
 
     prs.sort(function(a, b) {
       return (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0);
