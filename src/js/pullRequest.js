@@ -1,4 +1,8 @@
+var CHROME_EXT_URL = "https://chrome.google.com/webstore/detail/pr-buddy/bimchafkfbfdnapifcpokgkioaicfpnd?hl=en-US&gl=US";
+
 var pullRequest = {
+  items: [],
+
   /**
    * Determines how long a pull request has been open.
    * PRs open longer than 2 days receive a warning.
@@ -52,6 +56,7 @@ var pullRequest = {
       if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
         var jsonData = JSON.parse(xhr.responseText);
 
+        pullRequest.items = pullRequest.items.concat(jsonData);
         pullRequest.renderPrs(jsonData);
       }
     };
@@ -92,5 +97,73 @@ var pullRequest = {
       prList.appendChild(listItem);
       count.innerHTML = prList.children.length;
     }
+  },
+
+  /**
+   * Build Slack text and attachments
+   * @param {array} Array of PR objects
+   */
+  buildSlackMessage: function (prs) {
+    var message;
+    if (prs.length > 1) {
+      message = "There are *" + prs.length + "* pull requests in *review*:";
+    } else if (prs.length === 1) {
+      message = "There is *1* pull request in *review*:";
+    }
+
+    message += "\nSent from <" + CHROME_EXT_URL + "|Chrome Extension>";
+
+    prs.sort(function(a, b) {
+      return (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0);
+    });
+
+    var age, repo, timestamp;
+    var attachments = [];
+    prs.forEach(function (pr) {
+        age = pullRequest.determineAge(pr, new Date());
+        repo = pr["head"]["repo"]["full_name"];
+        attachments.push({
+          author_icon: pr["user"]["avatar_url"],
+          author_link: pr["user"]["html_url"],
+          author_name: pr["user"]["login"],
+          color: age.status,
+          fallback: pr["title"] + " (opened " + age.age + " ago)",
+          title: pr["title"],
+          title_link: pr["html_url"],
+          text: repo,
+          ts: new Date(pr["created_at"]).getTime()/1000|0
+        });
+    })
+
+    return {message: message, attachments: attachments};
+  },
+
+  /**
+   * Slack list of PRs
+   * @param {string} Slack Webhook ID
+   * @param {string} Slack Channel
+   */
+  slackIt: function (webhookId, channel) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status !== 200) {
+        alert(xhr.status);
+      }
+    };
+
+    var message = pullRequest.buildSlackMessage(pullRequest.items);
+
+    var data = JSON.stringify({
+      text: message.message,
+      attachments: message.attachments,
+      channel: channel,
+      username: "PR Buddy",
+      icon_emoji: ":octocat:"
+    });
+    
+    xhr.open("POST", "https://hooks.slack.com/services/" + webhookId);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(data);
   }
 };

@@ -18,4 +18,22 @@ function main () {
   });
 }
 
+/**
+ * Get slack webhook ID and channel from storage and send message with list of PRs.
+ */
+function slackIt () {
+  chrome.storage.local.get({
+    slackWebhookId: "",
+    slackChannel: ""
+  }, function (items) {
+    if (items.slackWebhookId === "" || items.slackChannel === "") {
+      var error = document.getElementById("error");
+      error.textContent = 'You must enter a Slack Webhook ID and Channel on the options page.';
+    } else {
+      pullRequest.slackIt(items.slackWebhookId, items.slackChannel);
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', main);
+document.getElementById("slack-it").addEventListener("click", slackIt);
