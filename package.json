@@ -2,12 +2,12 @@
   "name": "pr-buddy-chrome",
   "version": "0.0.0",
   "description": "Chrome extension for displaying GitHub Pull Requests.",
-  "main": "index.js",
+  "main": "test/test.html",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test --verbose"
   },
   "repository": {
     "type": "git",
