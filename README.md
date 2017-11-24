@@ -10,4 +10,13 @@ $ zip -r pr-buddy.zip pr-buddy-chrome -x *.git*
 
 ## Running Tests
 
-Open in browser: `test/test.html`
+Requires `grunt-cli`
+
+```
+npm install -g grunt-cli
+```
+
+```
+npm install
+grunt test
+```
