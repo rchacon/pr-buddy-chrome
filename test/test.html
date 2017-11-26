@@ -62,6 +62,72 @@
 
     pullRequest.determineAge = origDetermineAge;
   });
+
+  QUnit.test("pullRequest.buildSlackMessage with multiple PRs", function (assert) {
+    var prs = [{
+      head: {
+        repo: {
+          full_name: "owner/repo"
+        }
+      },
+      user: {
+        avatar_url: "my-avatar-url",
+        html_url: "my-html-url",
+        login: "hankhill"
+      },
+      html_url: "pr-html-url",
+      created_at: "2011-04-11T20:09:31Z",
+      title: "My 2nd PR"
+    },
+    {
+      head: {
+        repo: {
+          full_name: "owner/repo"
+        }
+      },
+      user: {
+        avatar_url: "my-avatar-url",
+        html_url: "my-html-url",
+        login: "hankhill"
+      },
+      html_url: "pr-html-url",
+      created_at: "2011-04-10T20:09:31Z",
+      title: "My 1st PR"
+    }];
+
+    var origDetermineAge = pullRequest.determineAge;
+    pullRequest.determineAge = function (x, y) { return {age: '28 days', status: 'great!'}; }
+
+    var result = pullRequest.buildSlackMessage(prs);
+    var expected = {
+      message: "There are *2* pull requests in *review*:\nSent from <" + CHROME_EXT_URL + "|Chrome Extension>",
+      attachments: [{
+        author_icon: "my-avatar-url",
+        author_link: "my-html-url",
+        author_name: "hankhill",
+        color: "great!",
+        fallback: "My 1st PR (opened 28 days ago)",
+        title: "My 1st PR",
+        title_link: "pr-html-url",
+        text: "owner/repo",
+        ts: new Date("2011-04-10T20:09:31Z").getTime()/1000|0
+      },
+      {
+        author_icon: "my-avatar-url",
+        author_link: "my-html-url",
+        author_name: "hankhill",
+        color: "great!",
+        fallback: "My 2nd PR (opened 28 days ago)",
+        title: "My 2nd PR",
+        title_link: "pr-html-url",
+        text: "owner/repo",
+        ts: new Date("2011-04-11T20:09:31Z").getTime()/1000|0
+      }]
+    }
+    assert.deepEqual(result, expected);
+
+    pullRequest.determineAge = origDetermineAge;
+  });
   </script>
 </head>
 <body>
