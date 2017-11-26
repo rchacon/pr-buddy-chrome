@@ -147,8 +147,12 @@ var pullRequest = {
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE && xhr.status !== 200) {
-        alert(xhr.status);
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        var status = document.getElementById("status");
+        status.textContent = xhr.status === 200 ? "Slack message sent" : "Error sending slack message";
+        setTimeout(function() {
+          status.textContent = "";
+        }, 750);
       }
     };
 
