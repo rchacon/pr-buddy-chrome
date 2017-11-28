@@ -1,0 +1,27 @@
+{
+  "name": "pr-buddy-chrome",
+  "version": "0.0.0",
+  "description": "Chrome extension for displaying GitHub Pull Requests.",
+  "main": "test/test.html",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rchacon/pr-buddy-chrome.git"
+  },
+  "author": "Raul Chacon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rchacon/pr-buddy-chrome/issues"
+  },
+  "homepage": "https://github.com/rchacon/pr-buddy-chrome#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-qunit": "^2.0.0"
+  }
+}

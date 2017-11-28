@@ -8,9 +8,14 @@
   <div class="container">
     <h1>Options</h1>
     <div id="status"></div>
+    <label for="token">GitHub Token</label>
     <input class="form-control" type="text" id="token" placeholder="GitHub Token">
-    <label for="repos">Hint: One repo per line</label>
+    <label for="repos">GitHub Repos (One repo per line)</label>
     <textarea id="repos" cols="80" rows="20" placeholder="Owner/Repo"></textarea>
+    <label for="slack-webhook-id">Slack Webhook ID</label>
+    <input class="form-control" type="text" id="slack-webhook-id" placeholder="T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX">
+    <label for="slack-channel">Slack Channel</label>
+    <input class="form-control" type="text" id="slack-channel" placeholder="#channel">
     <button id="save">Save</button>
   </div>
   <script src="js/options.js"></script>

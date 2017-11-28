@@ -10,3 +10,8 @@
 ------
 - Refactor to make testable
 - Add unit tests
+
+0.1.1
+------
+- Add Slack integration
+- Build with Travis CI

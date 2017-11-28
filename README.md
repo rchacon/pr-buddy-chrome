@@ -2,12 +2,23 @@
 
 Chrome extension for displaying GitHub Pull Requests.
 
+[![Build Status](https://travis-ci.org/rchacon/pr-buddy-chrome.svg?branch=master)](https://travis-ci.org/rchacon/pr-buddy-chrome)
+
 ## Create Distribution for Chrome Web Store
 
 ```
-$ zip -r pr-buddy.zip pr-buddy-chrome -x *.git*
+$ zip -r pr-buddy.zip pr-buddy-chrome -x *.git* -x *node_modules*
 ```
 
 ## Running Tests
 
-Open in browser: `test/test.html`
+Requires `grunt-cli`
+
+```
+npm install -g grunt-cli
+```
+
+```
+npm install
+npm test
+```
