@@ -105,10 +105,11 @@ var pullRequest = {
    */
   buildSlackMessage: function (prs) {
     var message;
-    if (prs.length > 1) {
-      message = "There are *" + prs.length + "* pull requests in *review*:";
-    } else if (prs.length === 1) {
+
+    if (prs.length === 1) {
       message = "There is *1* pull request in *review*:";
+    } else {
+      message = "There are *" + prs.length + "* pull requests in *review*:";
     }
 
     message += "\nSent from <" + CHROME_EXT_URL + "|Chrome Extension>";
