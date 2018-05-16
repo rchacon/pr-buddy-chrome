@@ -11,4 +11,6 @@ cache:
     - node_modules
 
 before_script:
+  - echo 'America/New_York' | sudo tee /etc/timezone
+  - sudo dpkg-reconfigure --frontend noninteractive tzdata
   - npm install -g grunt-cli
