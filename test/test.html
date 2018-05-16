@@ -68,7 +68,7 @@
     pullRequest.renderPrs(prs);
 
     assert.equal(count[0].innerHTML, "2", "The count should be 2 after calling renderPrs");
-    assert.equal(prList[0].innerHTML, "<li class=\"great!\"><a href=\"pr-html-url\"><span>hankhill</span><br>My 1st PR<br><span>owner/repo</span><br><span>Sun Apr 10 2011 at 4:09:31 PM EDT</span></a></li><li class=\"great!\"><a href=\"pr-html-url\"><span>hankhill</span><br>My 2nd PR<br><span>owner/repo</span><br><span>Mon Apr 11 2011 at 4:09:31 PM EDT</span></a></li>", "prList will contain markup after calling renderPrs");
+    assert.equal(prList[0].innerHTML, "<li class=\"great!\"><a href=\"pr-html-url\"><span>hankhill</span><br>My 1st PR<br><span>owner/repo</span><br><span>Sun Apr 10 2011 at 8:09:31 PM GMT</span></a></li><li class=\"great!\"><a href=\"pr-html-url\"><span>hankhill</span><br>My 2nd PR<br><span>owner/repo</span><br><span>Mon Apr 11 2011 at 8:09:31 PM GMT</span></a></li>", "prList will contain markup after calling renderPrs");
 
     // Restore determineAge
     pullRequest.determineAge = origDetermineAge;
