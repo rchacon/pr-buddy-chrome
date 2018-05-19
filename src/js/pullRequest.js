@@ -86,6 +86,7 @@ var pullRequest = {
       content += "<span>" + pr["head"]["repo"]["full_name"] + "</span><br>";
       createdAt = new Date(pr["created_at"]);
       content += "<span>" + createdAt.toDateString() + " at " + createdAt.toLocaleTimeString('en-US') + "</span>";
+      content += '<span style="display: none">' + pr["created_at"] + "</span>"; // used for sorting
       link.innerHTML = content;
 
       age = pullRequest.determineAge(pr, new Date());
@@ -96,6 +97,44 @@ var pullRequest = {
 
       prList.appendChild(listItem);
       count.innerHTML = prList.children.length;
+
+      pullRequest.sortList(prList);
+    }
+  },
+
+  /**
+   * Sort items in list element
+   * @param {object} list
+   * https://www.w3schools.com/howto/howto_js_sort_list.asp
+   */
+  sortList: function (list) {
+    var a, b, i, switching, items, shouldSwitch;
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      items = list.getElementsByTagName("li");
+      // Loop through all list items:
+      for (i = 0; i < (items.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Check if the next item should
+        switch place with the current item: */
+        a = new Date(items[i].getElementsByTagName("span")[3].innerHTML);
+        b = new Date(items[i + 1].getElementsByTagName("span")[3].innerHTML);
+        if (a > b) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark the switch as done: */
+        items[i].parentNode.insertBefore(items[i + 1], items[i]);
+        switching = true;
+      }
     }
   },
 

@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "grunt test --verbose",
+    "test": "TZ=Etc/GMT grunt test --verbose",
     "build": "mkdir -p dist/ && zip -r dist/pr-buddy.zip src icons manifest.json"
   },
   "repository": {
