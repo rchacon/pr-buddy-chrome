@@ -86,6 +86,7 @@ var pullRequest = {
       content += "<span>" + pr["head"]["repo"]["full_name"] + "</span><br>";
       createdAt = new Date(pr["created_at"]);
       content += "<span>" + createdAt.toDateString() + " at " + createdAt.toLocaleTimeString('en-US') + "</span>";
+      content += '<span style="display: none">' + pr["created_at"] + "</span>"; // used for sorting
       link.innerHTML = content;
 
       age = pullRequest.determineAge(pr, new Date());
@@ -107,7 +108,7 @@ var pullRequest = {
    * https://www.w3schools.com/howto/howto_js_sort_list.asp
    */
   sortList: function (list) {
-    var i, switching, items, shouldSwitch;
+    var a, b, i, switching, items, shouldSwitch;
     switching = true;
     /* Make a loop that will continue until
     no switching has been done: */
@@ -121,9 +122,9 @@ var pullRequest = {
         shouldSwitch = false;
         /* Check if the next item should
         switch place with the current item: */
-        if (items[i].innerHTML.toLowerCase() > items[i + 1].innerHTML.toLowerCase()) {
-          /* If next item is alphabetically lower than current item,
-          mark as a switch and break the loop: */
+        a = new Date(items[i].getElementsByTagName("span")[3].innerHTML);
+        b = new Date(items[i + 1].getElementsByTagName("span")[3].innerHTML);
+        if (a > b) {
           shouldSwitch = true;
           break;
         }
