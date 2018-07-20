@@ -15,3 +15,9 @@
 ------
 - Add Slack integration
 - Build with Travis CI
+
+0.1.2
+------
+- Show 0 PRs instead of undefined PRs where there aren't any
+- Order PR list in popup by created_at
+- Add build command to package.jsons
