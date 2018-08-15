@@ -2,6 +2,11 @@ var CHROME_EXT_URL = "https://chrome.google.com/webstore/detail/pr-buddy/bimchaf
 
 var pullRequest = {
   items: [],
+  token: null,
+
+  setToken: function (token) {
+    pullRequest.token = token;
+  },
 
   /**
    * Determines how long a pull request has been open.
@@ -49,7 +54,7 @@ var pullRequest = {
    * @param {string} token - GitHub token with full repo access.
    * @param {string} repo - Github repo (owner/repo).
    */
-  getPrs: function (token, repo) {
+  getPrs: function (repo) {
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
@@ -63,8 +68,49 @@ var pullRequest = {
     
     xhr.open("GET", "https://api.github.com/repos/" + repo + "/pulls");    
     xhr.setRequestHeader("Accept", "application/vnd.github.v3+json");
-    xhr.setRequestHeader("Authorization", "token " + token);
+    xhr.setRequestHeader("Authorization", "token " + pullRequest.token);
     xhr.send();
+  },
+
+  /**
+   * Get Approvals of PR
+   * @param {object} pr - PR object from GitHub API
+   */
+  getApprovals: function (pr) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+      var jsonData = JSON.parse(xhr.responseText);
+
+      pullRequest.setApprovals(pr["id"], jsonData);
+    }
+
+    var repo = pr["head"]["repo"]["full_name"];
+    var prNumber = pr["number"];
+
+    xhr.open("GET", "https://api.github.com/repos/" + repo + "/pulls/" + prNumber + '/reviews');
+    xhr.setRequestHeader("Accept", "application/vnd.github.v3+json");
+    xhr.setRequestHeader("Authorization", "token " + pullRequest.token);
+    xhr.send();
+  },
+
+  /**
+   * Set Approvals of PR
+   * @param {number} prNumber - PR number
+   * @param {object} jsonData - Reviews response from GitHub
+   */
+  setApprovals: function (prId, reviews) {
+    // Get element
+    var prLink = document.getElementById("pr-" + prId).getElementsByTagName("a")[0];
+
+    // Set approval count
+    var approvalCount = 0;
+    for (var i = 0; i < reviews.length; i++) {
+      if (reviews[i]["state"] === "APPROVED") {
+        approvalCount++;
+      }
+    }
+    prLink.innerHTML = prLink.innerHTML + '<br>' + 'Approvals: ' + approvalCount;
   },
 
   /**
@@ -92,6 +138,7 @@ var pullRequest = {
       age = pullRequest.determineAge(pr, new Date());
 
       listItem = document.createElement("li");
+      listItem.id = "pr-" + pr["id"];
       listItem.className = age["status"];
       listItem.appendChild(link);
 
@@ -99,6 +146,8 @@ var pullRequest = {
       count.innerHTML = prList.children.length;
 
       pullRequest.sortList(prList);
+
+      pullRequest.getApprovals(pr);
     }
   },
 
